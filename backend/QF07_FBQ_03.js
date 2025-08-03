@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { Pool } = require('pg');
+// pool = require('./database');
 const dotenv = require('dotenv');
 
 // Load environment variables from the project root
@@ -36,6 +37,11 @@ router.post('/api/qc/fbq03/hourly', async (req, res) => {
       inject_pressure,
       feed_pipe_condition
     } = req.body;
+
+    if (inject_pressure && inject_pressure > 2.0) {
+   return res.status(400).json({ error: "Inject Pressure cannot exceed 2.0 bar" });
+    }
+
 
     const query = `
       INSERT INTO "QF 07 FBQ - 03" (

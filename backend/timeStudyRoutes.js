@@ -44,6 +44,33 @@ router.post('/api/time-study', async (req, res) => {
         console.error('Error inserting time study data:', error);
         res.status(500).json({ error: 'Internal server error', details: error.message });
     }
+    });
+
+    // ✅ Get last 5 time study records
+router.get('/api/time-study/records', async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT 
+          id,
+          shift,
+          c, si, mn, p, s, cr, ni, al, cu, sn, mo,
+          cac2_s, fesi_sh, femn_sic, cu_fecr,
+          carbon_steel,
+          part_name, heat_code, grade,
+          created_at   -- ✅ use raw timestamp instead of to_char
+      FROM time_study_process
+      ORDER BY id DESC
+      LIMIT 5;
+    `);
+
+    res.json(result.rows); // ✅ Always return an array
+  } catch (error) {
+    console.error('❌ Error fetching time study records:', error.message);
+    res.status(500).json({ error: 'Internal server error', details: error.message });
+  }
 });
+
+
+
 
 module.exports = router;

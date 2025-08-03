@@ -152,7 +152,7 @@
                 
                 <div class="form-group required">
                     <label for="grade">Grade</label>
-                    <input type="text" id="grade" required>
+                    <input type="text" id="grade" name="grade" required>
                 </div>
             </div>
             
@@ -248,6 +248,42 @@
             
             <div id="responseMessage" class="response-message"></div>
         </form>
+
+        <div id="timeStudyRecords" style="margin-top: 30px;">
+            <h3 style="text-align: center;">Previous Records</h3>
+            <table style="width: 100%; border-collapse: collapse;" id="timeStudyTable">
+                <thead>
+                <tr style="background: #eef5ff;">
+                    <th>Time</th>
+                    <th>Shift</th>
+                    <th>Part Name</th>
+                    <th>Heat Code</th>
+                    <th>Grade</th>
+                    <th>C</th>
+                    <th>Si</th>
+                    <th>Mn</th>
+                    <th>P</th>
+                    <th>S</th>
+                    <th>Cr</th>
+                    <th>Ni</th>
+                    <th>Al</th>
+                    <th>Cu</th>
+                    <th>Sn</th>
+                    <th>Mo</th>
+                    <th>CaC2/S</th>
+                    <th>FeSi-Sh</th>
+                    <th>FeMn-SiC</th>
+                    <th>Cu-FeCr</th>
+                    <th>Carbon Steel</th>
+                </tr>
+                </thead>
+                <tbody id="timeStudyBody">
+                <tr><td colspan="21" style="text-align:center; padding:10px;">No records found</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+
     </div>
 
     <script src="app.js"></script>
