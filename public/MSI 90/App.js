@@ -182,6 +182,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         formFields.airPressure.value = data.air_pressure || '';
         formFields.injectPressure.value = data.inject_pressure || '';
         formFields.feedPipe.value = data.feed_pipe_condition || '';
+        formFields.powderSize.value = data.powder_size || '';
+        formFields.moisture.value = data.moisture || '';
+      
+
       }
     } catch (error) {
       console.error('Prefill error:', error);
