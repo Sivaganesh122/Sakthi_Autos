@@ -57,7 +57,7 @@ router.get('/api/time-study/records', async (req, res) => {
           cac2_s, fesi_sh, femn_sic, cu_fecr,
           carbon_steel,
           part_name, heat_code, grade,
-          created_at   -- ✅ use raw timestamp instead of to_char
+          timestamp   -- ✅ use raw timestamp instead of to_char
       FROM time_study_process
       ORDER BY id DESC
       LIMIT 5;
@@ -65,8 +65,8 @@ router.get('/api/time-study/records', async (req, res) => {
 
     res.json(result.rows); // ✅ Always return an array
   } catch (error) {
-    console.error('❌ Error fetching time study records:', error.message);
-    res.status(500).json({ error: 'Internal server error', details: error.message });
+    console.error('❌ Error fetching time study records:', error);
+    res.status(500).json({ error: 'Internal server error', details: error.message, stack: error.stack });
   }
 });
 

@@ -148,35 +148,40 @@ async function loadLastRecord() {
     }
 }
 
-// Submit hourly data
-async function submitHourlyData() {
+
+// Unified submit for all QC FBQ03 data
+async function submitUnifiedData(event) {
+    event.preventDefault();
     const component = getSelectedComponent();
     if (!component) {
         showMessage('Please select a component first', 'error');
         return;
     }
-    
     const data = {
         component_in_production: component,
         inoculation_flow_rate_rpm: parseFloat(document.getElementById('flowRateRPM').value) || null,
         inoculation_flow_rate_gms: parseFloat(document.getElementById('flowRateGMS').value) || null,
         air_pressure: parseFloat(document.getElementById('airPressure').value) || null,
         inject_pressure: parseFloat(document.getElementById('injectPressure').value) || null,
-        feed_pipe_condition: document.getElementById('feedPipeCondition').value || null
+        feed_pipe_condition: document.getElementById('feedPipeCondition').value || null,
+        air_line_water_drainage: document.getElementById('airLineWaterDrainage').checked,
+        hopper_cleaning: document.getElementById('hopperCleaning').checked,
+        inoculant_powder_size: parseFloat(document.getElementById('powderSize').value) || null,
+        inoculant_powder_moisture: parseFloat(document.getElementById('powderMoisture').value) || null,
+        is_new_bag: document.getElementById('isNewBag').checked,
+        gauge_test: parseFloat(document.getElementById('gaugeTest').value) || null
     };
-    
     try {
-        const response = await fetch('http://localhost:3000/api/qc/fbq03/hourly', {
+        const response = await fetch('http://localhost:3000/api/qc/fbq03', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(data)
         });
-        
         if (response.ok) {
             const result = await response.json();
-            showMessage('Hourly data submitted successfully!', 'success');
+            showMessage('QC data submitted successfully!', 'success');
             loadLastRecord();
             // Clear form fields
             document.getElementById('flowRateRPM').value = '';
@@ -184,131 +189,19 @@ async function submitHourlyData() {
             document.getElementById('airPressure').value = '';
             document.getElementById('injectPressure').value = '';
             document.getElementById('feedPipeCondition').value = '';
-        } else {
-            const error = await response.json();
-            showMessage(`Error: ${error.error}`, 'error');
-        }
-    } catch (error) {
-        console.error('Error submitting hourly data:', error);
-        showMessage('Error submitting hourly data', 'error');
-    }
-}
-
-// Submit 4-hourly data
-async function submit4HourlyData() {
-    const component = getSelectedComponent();
-    if (!component) {
-        showMessage('Please select a component first', 'error');
-        return;
-    }
-    
-    const data = {
-        component_in_production: component,
-        air_line_water_drainage: document.getElementById('airLineWaterDrainage').checked,
-        hopper_cleaning: document.getElementById('hopperCleaning').checked
-    };
-    
-    try {
-        const response = await fetch('http://localhost:3000/api/qc/fbq03/4hourly', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        });
-        
-        if (response.ok) {
-            const result = await response.json();
-            showMessage('4-hourly data submitted successfully!', 'success');
-            loadLastRecord();
-            // Clear form fields
             document.getElementById('airLineWaterDrainage').checked = false;
             document.getElementById('hopperCleaning').checked = false;
-        } else {
-            const error = await response.json();
-            showMessage(`Error: ${error.error}`, 'error');
-        }
-    } catch (error) {
-        console.error('Error submitting 4-hourly data:', error);
-        showMessage('Error submitting 4-hourly data', 'error');
-    }
-}
-
-// Submit bag change data
-async function submitBagChangeData() {
-    const component = getSelectedComponent();
-    if (!component) {
-        showMessage('Please select a component first', 'error');
-        return;
-    }
-    
-    const data = {
-        component_in_production: component,
-        inoculant_powder_size: parseFloat(document.getElementById('powderSize').value) || null,
-        inoculant_powder_moisture: parseFloat(document.getElementById('powderMoisture').value) || null
-    };
-    
-    try {
-        const response = await fetch('http://localhost:3000/api/qc/fbq03/bag-change', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        });
-        
-        if (response.ok) {
-            const result = await response.json();
-            showMessage('Bag change data submitted successfully!', 'success');
-            loadLastRecord();
-            // Clear form fields
             document.getElementById('powderSize').value = '';
             document.getElementById('powderMoisture').value = '';
-        } else {
-            const error = await response.json();
-            showMessage(`Error: ${error.error}`, 'error');
-        }
-    } catch (error) {
-        console.error('Error submitting bag change data:', error);
-        showMessage('Error submitting bag change data', 'error');
-    }
-}
-
-// Submit gauge test data
-async function submitGaugeTestData() {
-    const component = getSelectedComponent();
-    if (!component) {
-        showMessage('Please select a component first', 'error');
-        return;
-    }
-    
-    const data = {
-        component_in_production: component,
-        gauge_test: parseFloat(document.getElementById('gaugeTest').value) || null
-    };
-    
-    try {
-        const response = await fetch('http://localhost:3000/api/qc/fbq03/gauge-test', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        });
-        
-        if (response.ok) {
-            const result = await response.json();
-            showMessage('Gauge test data submitted successfully!', 'success');
-            loadLastRecord();
-            // Clear form fields
+            document.getElementById('isNewBag').checked = false;
             document.getElementById('gaugeTest').value = '';
         } else {
             const error = await response.json();
             showMessage(`Error: ${error.error}`, 'error');
         }
     } catch (error) {
-        console.error('Error submitting gauge test data:', error);
-        showMessage('Error submitting gauge test data', 'error');
+        console.error('Error submitting QC data:', error);
+        showMessage('Error submitting QC data', 'error');
     }
 }
 

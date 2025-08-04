@@ -161,9 +161,9 @@
             </div>
         </div>
         
-        <!-- Hourly Section -->
-        <div class="form-section">
-            <h3>Hourly Parameters (Items 2-6)</h3>
+        <!-- Unified QC FBQ03 Section -->
+        <form id="qcForm" class="form-section" onsubmit="submitUnifiedData(event)">
+            <h3>QC FBQ03 Parameters</h3>
             <div class="form-group">
                 <label for="flowRateRPM">Inoculation Flow Rate Setting (A) RPM:</label>
                 <input type="number" id="flowRateRPM" step="0.1">
@@ -189,12 +189,6 @@
                     <option value="Maintenance Required">Maintenance Required</option>
                 </select>
             </div>
-            <button class="btn-primary" onclick="submitHourlyData()">Submit Hourly Data</button>
-        </div>
-        
-        <!-- 4-Hourly Section -->
-        <div class="form-section">
-            <h3>4-Hourly Parameters (Item 7)</h3>
             <div class="form-group">
                 <div class="checkbox-group">
                     <input type="checkbox" id="airLineWaterDrainage">
@@ -207,12 +201,6 @@
                     <label for="hopperCleaning">Hopper Cleaning</label>
                 </div>
             </div>
-            <button class="btn-warning" onclick="submit4HourlyData()">Submit 4-Hourly Data</button>
-        </div>
-        
-        <!-- Bag Change Section -->
-        <div class="form-section">
-            <h3>Bag Change Parameters (Item 8)</h3>
             <div class="form-group">
                 <label for="powderSize">Inoculant Powder Size:</label>
                 <input type="number" id="powderSize" step="0.01">
@@ -221,18 +209,18 @@
                 <label for="powderMoisture">Inoculant Powder Moisture:</label>
                 <input type="number" id="powderMoisture" step="0.01">
             </div>
-            <button class="btn-danger" onclick="submitBagChangeData()">Submit Bag Change Data</button>
-        </div>
-        
-        <!-- Daily Section -->
-        <div class="form-section">
-            <h3>Daily Parameter (Item 9)</h3>
+            <div class="form-group">
+                <div class="checkbox-group">
+                    <input type="checkbox" id="isNewBag">
+                    <label for="isNewBag">Is New Bag</label>
+                </div>
+            </div>
             <div class="form-group">
                 <label for="gaugeTest">Gauge Test (±10%):</label>
                 <input type="number" id="gaugeTest" step="0.1">
             </div>
-            <button class="btn-success" onclick="submitGaugeTestData()">Submit Gauge Test Data</button>
-        </div>
+            <button class="btn-primary" type="submit">Submit QC Data</button>
+        </form>
         
         <!-- Response Message -->
         <div id="responseMessage" class="response-message"></div>

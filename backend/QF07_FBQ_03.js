@@ -26,8 +26,11 @@ pool.connect((err, client, done) => {
   }
 });
 
-// Submit hourly QC data
-router.post('/api/qc/fbq03/hourly', async (req, res) => {
+
+// Unified endpoint for all QC FBQ03 event types
+
+// Unified endpoint for all QC FBQ03 parameters (no event_type required)
+router.post('/api/qc/fbq03', async (req, res) => {
   try {
     const {
       component_in_production,
@@ -35,13 +38,25 @@ router.post('/api/qc/fbq03/hourly', async (req, res) => {
       inoculation_flow_rate_gms,
       air_pressure,
       inject_pressure,
-      feed_pipe_condition
+      feed_pipe_condition,
+      air_line_water_drainage,
+      hopper_cleaning,
+      inoculant_powder_size,
+      inoculant_powder_moisture,
+      is_new_bag,
+      gauge_test
     } = req.body;
 
-    if (inject_pressure && inject_pressure > 2.0) {
-   return res.status(400).json({ error: "Inject Pressure cannot exceed 2.0 bar" });
+    const micro_structure = 'Inoculation System Checks';
+    const macro_structure = 'Pre-Process';
+
+    if (!component_in_production) {
+      return res.status(400).json({ error: 'component_in_production is required' });
     }
 
+    if (inject_pressure && inject_pressure > 2.0) {
+      return res.status(400).json({ error: "Inject Pressure cannot exceed 2.0 bar" });
+    }
 
     const query = `
       INSERT INTO "QF 07 FBQ - 03" (
@@ -51,167 +66,37 @@ router.post('/api/qc/fbq03/hourly', async (req, res) => {
         air_pressure,
         inject_pressure,
         feed_pipe_condition,
-        event_type,
-        micro_structure,
-        macro_structure
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
-      RETURNING *;
-    `;
-
-    const values = [
-      component_in_production,
-      inoculation_flow_rate_rpm,
-      inoculation_flow_rate_gms,
-      air_pressure,
-      inject_pressure,
-      feed_pipe_condition,
-      'hourly',
-      'Inoculation System Checks',
-      'Pre-Process'
-    ];
-
-    const newRecord = await pool.query(query, values);
-    
-    // Update last used timestamp
-    await pool.query(
-      `UPDATE master_data 
-       SET last_used = NOW() 
-       WHERE product_code = $1`,
-      [component_in_production]
-    );
-
-    res.json(newRecord.rows[0]);
-  } catch (err) {
-    console.error('Error submitting hourly data:', err.message);
-    res.status(500).json({ error: 'Server error', details: err.message });
-  }
-});
-
-// Submit 4-hourly QC data
-router.post('/api/qc/fbq03/4hourly', async (req, res) => {
-  try {
-    const {
-      component_in_production,
-      air_line_water_drainage,
-      hopper_cleaning
-    } = req.body;
-
-    const query = `
-      INSERT INTO "QF 07 FBQ - 03" (
-        component_in_production,
         air_line_water_drainage,
         hopper_cleaning,
-        event_type,
-        micro_structure,
-        macro_structure
-      ) VALUES ($1, $2, $3, $4, $5, $6)
-      RETURNING *;
-    `;
-
-    const values = [
-      component_in_production,
-      air_line_water_drainage,
-      hopper_cleaning,
-      '4-hourly',
-      'Inoculation System Checks',
-      'Pre-Process'
-    ];
-
-    const newRecord = await pool.query(query, values);
-    
-    // Update last used timestamp
-    await pool.query(
-      `UPDATE master_data 
-       SET last_used = NOW() 
-       WHERE product_code = $1`,
-      [component_in_production]
-    );
-
-    res.json(newRecord.rows[0]);
-  } catch (err) {
-    console.error('Error submitting 4-hourly data:', err.message);
-    res.status(500).json({ error: 'Server error', details: err.message });
-  }
-});
-
-// Submit bag change QC data
-router.post('/api/qc/fbq03/bag-change', async (req, res) => {
-  try {
-    const {
-      component_in_production,
-      inoculant_powder_size,
-      inoculant_powder_moisture
-    } = req.body;
-
-    const query = `
-      INSERT INTO "QF 07 FBQ - 03" (
-        component_in_production,
         inoculant_powder_size,
         inoculant_powder_moisture,
         is_new_bag,
-        event_type,
-        micro_structure,
-        macro_structure
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7)
-      RETURNING *;
-    `;
-
-    const values = [
-      component_in_production,
-      inoculant_powder_size,
-      inoculant_powder_moisture,
-      true, // is_new_bag
-      'bag_change',
-      'Inoculation System Checks',
-      'Pre-Process'
-    ];
-
-    const newRecord = await pool.query(query, values);
-    
-    // Update last used timestamp
-    await pool.query(
-      `UPDATE master_data 
-       SET last_used = NOW() 
-       WHERE product_code = $1`,
-      [component_in_production]
-    );
-
-    res.json(newRecord.rows[0]);
-  } catch (err) {
-    console.error('Error submitting bag change data:', err.message);
-    res.status(500).json({ error: 'Server error', details: err.message });
-  }
-});
-
-// Submit daily gauge test QC data
-router.post('/api/qc/fbq03/gauge-test', async (req, res) => {
-  try {
-    const {
-      component_in_production,
-      gauge_test
-    } = req.body;
-
-    const query = `
-      INSERT INTO "QF 07 FBQ - 03" (
-        component_in_production,
         gauge_test,
-        event_type,
         micro_structure,
         macro_structure
-      ) VALUES ($1, $2, $3, $4, $5)
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
       RETURNING *;
     `;
 
     const values = [
-      component_in_production,
-      gauge_test,
-      'gauge_test',
-      'Inoculation System Checks',
-      'Pre-Process'
+      component_in_production || null,
+      inoculation_flow_rate_rpm || null,
+      inoculation_flow_rate_gms || null,
+      air_pressure || null,
+      inject_pressure || null,
+      feed_pipe_condition || null,
+      air_line_water_drainage || null,
+      hopper_cleaning || null,
+      inoculant_powder_size || null,
+      inoculant_powder_moisture || null,
+      typeof is_new_bag === 'boolean' ? is_new_bag : null,
+      gauge_test || null,
+      micro_structure,
+      macro_structure
     ];
 
     const newRecord = await pool.query(query, values);
-    
+
     // Update last used timestamp
     await pool.query(
       `UPDATE master_data 
@@ -222,7 +107,7 @@ router.post('/api/qc/fbq03/gauge-test', async (req, res) => {
 
     res.json(newRecord.rows[0]);
   } catch (err) {
-    console.error('Error submitting gauge test data:', err.message);
+    console.error('Error submitting QC FBQ03 data:', err.message);
     res.status(500).json({ error: 'Server error', details: err.message });
   }
 });

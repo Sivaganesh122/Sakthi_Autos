@@ -35,30 +35,19 @@ CREATE TABLE "QF 07 FBQ - 02" (
 CREATE TABLE "QF 07 FBQ - 03" (
     id SERIAL PRIMARY KEY,
     component_in_production VARCHAR(20) REFERENCES master_data(product_code) NOT NULL,
-    -- Hourly parameters (collected every hour)
-    inoculation_flow_rate_rpm DECIMAL,       -- RPM setting
-    inoculation_flow_rate_gms DECIMAL,       -- GMS/sec setting
-    air_pressure DECIMAL CHECK (air_pressure >= 4.0),  -- Min 4.0 bar
-    inject_pressure DECIMAL CHECK (inject_pressure <= 2.0),  -- Max 2.0 bar
-    feed_pipe_condition TEXT,                -- Including clamping
-    -- 4-hourly parameters
-    air_line_water_drainage BOOLEAN,         -- Every 4 hours
-    hopper_cleaning BOOLEAN,                 -- Every 4 hours
-    -- Bag change parameters
-    inoculant_powder_size DECIMAL,           -- Only when new bag is used
-    inoculant_powder_moisture DECIMAL,       -- Only when new bag is used
-    is_new_bag BOOLEAN DEFAULT FALSE,        -- Flag for bag change events
-    -- Daily parameters
-    gauge_test DECIMAL,                      -- ±10% (recorded once per day)
-    -- Metadata
+    inoculation_flow_rate_rpm DECIMAL,
+    inoculation_flow_rate_gms DECIMAL,
+    air_pressure DECIMAL CHECK (air_pressure >= 4.0),
+    inject_pressure DECIMAL CHECK (inject_pressure <= 2.0),
+    feed_pipe_condition TEXT,
+    air_line_water_drainage BOOLEAN,
+    hopper_cleaning BOOLEAN,
+    inoculant_powder_size DECIMAL,
+    inoculant_powder_moisture DECIMAL,
+    is_new_bag BOOLEAN DEFAULT FALSE,
+    gauge_test DECIMAL,
     micro_structure VARCHAR(100) DEFAULT 'Inoculation System Checks',
-    macro_structure VARCHAR(100) DEFAULT 'Pre-Process',
-    signature TEXT,                          -- For future use
-    -- Event type and timestamp
-    event_type VARCHAR(20) NOT NULL CHECK (
-        event_type IN ('hourly', '4-hourly', 'bag_change', 'gauge_test')
-    ),
-    event_time TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    macro_structure VARCHAR(100) DEFAULT 'Pre-Process'
 );
 
 -- Recently used products
@@ -148,4 +137,17 @@ CREATE TABLE qc_register (
     tapping_time TIME,
     corrective_addition_kgs FLOAT,
     tapping_wt_kgs FLOAT
+);
+
+-- Online Micro Coupon Inspection table
+CREATE TABLE online_micro_coupon_inspection (
+    id SERIAL PRIMARY KEY,
+    record_timestamp TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    disa VARCHAR(255),
+    pp_code VARCHAR(255),
+    item_description TEXT,
+    nodularity_percentage DECIMAL(5, 2),
+    remarks TEXT,
+    micro_structure VARCHAR(100) DEFAULT 'Micro Structure Analysis',
+    macro_structure VARCHAR(100) DEFAULT 'Quality Control'
 );

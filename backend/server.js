@@ -21,11 +21,13 @@ const QF07Router = require('./QF07_FBQ_02');
 const QF07FBQ03Router = require('./QF07_FBQ_03');
 const timeStudyRouter = require('./timeStudyRoutes');
 const qcRegisterRouter = require('./qcRegisterRoutes'); // Add QC Register routes
+const microCouponRouter = require('./microCouponRoutes'); // Add Micro Coupon routes
 
 app.use('/', QF07Router);
 app.use('/', QF07FBQ03Router);
 app.use('/', timeStudyRouter);
 app.use('/', qcRegisterRouter); // Register QC Register routes
+app.use('/', microCouponRouter); // Register Micro Coupon routes
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
