@@ -16,3 +16,13 @@ const pool = new Pool({
 });
 
 module.exports = pool;
+
+// Test database connection at startup
+pool.connect((err, client, done) => {
+    if (err) {
+        console.error('Shared DB Pool - Database connection test failed:', err.stack);
+    } else {
+        console.log('Shared DB Pool - Database connected successfully');
+        done();
+    }
+});

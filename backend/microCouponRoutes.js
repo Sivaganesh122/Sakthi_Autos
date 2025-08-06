@@ -2,6 +2,16 @@ const express = require('express');
 const router = express.Router();
 const pool = require('./database');
 
+// Test database connection for Micro Coupon
+pool.connect((err, client, done) => {
+    if (err) {
+        console.error('MicroCouponRoutes - Database connection test failed:', err.stack);
+    } else {
+        console.log('MicroCouponRoutes - Database connected successfully');
+        done();
+    }
+});
+
 // POST endpoint to submit Online Micro Coupon Inspection data
 
 router.post('/api/micro-coupon', async (req, res) => {

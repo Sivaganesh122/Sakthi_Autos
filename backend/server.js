@@ -3,7 +3,7 @@ dotenv.config({ path: '.env' });
 
 const express = require('express');
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 // ✅ Use express.json() BEFORE the routes
 app.use(express.json());
@@ -22,12 +22,16 @@ const QF07FBQ03Router = require('./QF07_FBQ_03');
 const timeStudyRouter = require('./timeStudyRoutes');
 const qcRegisterRouter = require('./qcRegisterRoutes'); // Add QC Register routes
 const microCouponRouter = require('./microCouponRoutes'); // Add Micro Coupon routes
+const inspectionRegisterRouter = require('./inspectionRegisterRoutes');
+const tensileTestReportRouter = require('./tensileTestReportRoutes');
 
 app.use('/', QF07Router);
 app.use('/', QF07FBQ03Router);
 app.use('/', timeStudyRouter);
 app.use('/', qcRegisterRouter); // Register QC Register routes
 app.use('/', microCouponRouter); // Register Micro Coupon routes
+app.use('/', inspectionRegisterRouter); // Register Inspection Register routes at /api/inspection-register
+app.use('/', tensileTestReportRouter); // Register Tensile Test Report routes
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
