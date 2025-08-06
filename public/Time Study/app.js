@@ -46,7 +46,7 @@ document.getElementById('timeStudyForm').addEventListener('submit', async functi
         
         if (response.ok) {
             // Show success message
-            showMessage('Time study data submitted successfully!', 'success');
+           window.alert('Time study data submitted successfully!', 'success');
             // Reset form
             document.getElementById('timeStudyForm').reset();
             loadTimeStudyRecords();
