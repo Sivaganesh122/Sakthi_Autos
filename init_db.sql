@@ -1,4 +1,3 @@
--- Master data table
 CREATE TABLE master_data (
     product_code VARCHAR(20) PRIMARY KEY,
     s_no SERIAL,
@@ -50,7 +49,16 @@ CREATE TABLE "QF 07 FBQ - 03" (
     macro_structure VARCHAR(100) DEFAULT 'Pre-Process'
 );
 
--- Recently used products
+-- Table for inspection register
+CREATE TABLE IF NOT EXISTS inspection_register (
+    id SERIAL PRIMARY KEY,
+    inspection_date DATE NOT NULL,
+    shift VARCHAR(50),
+    item_description TEXT NOT NULL,
+    inspection_time TIME,
+    defects_and_quantity TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
 CREATE TABLE recently_used_products (
     user_id VARCHAR(50),
     product_code VARCHAR(20) REFERENCES master_data(product_code),

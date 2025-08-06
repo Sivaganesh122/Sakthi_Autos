@@ -17,7 +17,9 @@ document.addEventListener('DOMContentLoaded', function() {
 // Load available components
 async function loadComponents() {
     try {
-        const response = await fetch('http://localhost:3000/api/master-data');
+        const BACKEND_PORT = window.BACKEND_PORT || 3000;
+        const BACKEND_URL = `http://localhost:${BACKEND_PORT}`;
+        const response = await fetch(`${BACKEND_URL}/api/master-data`);
         components = await response.json();
         
         // Initialize the input with the components data
@@ -120,7 +122,7 @@ async function loadLastRecord() {
     }
     
     try {
-        const response = await fetch(`http://localhost:3000/api/qc/fbq03/latest/${component}`);
+        const response = await fetch(`${BACKEND_URL}/api/qc/fbq03/latest/${component}`);
         const record = await response.json();
         
         const display = document.getElementById('lastRecordDisplay');
@@ -172,7 +174,7 @@ async function submitUnifiedData(event) {
         gauge_test: parseFloat(document.getElementById('gaugeTest').value) || null
     };
     try {
-        const response = await fetch('http://localhost:3000/api/qc/fbq03', {
+        const response = await fetch(`${BACKEND_URL}/api/qc/fbq03`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

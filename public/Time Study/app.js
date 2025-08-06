@@ -34,7 +34,9 @@ document.getElementById('timeStudyForm').addEventListener('submit', async functi
     
     try {
         // Send data to backend
-        const response = await fetch('http://localhost:3000/api/time-study', {
+        const BACKEND_PORT = window.BACKEND_PORT || 3000;
+        const BACKEND_URL = `http://localhost:${BACKEND_PORT}`;
+        const response = await fetch(`${BACKEND_URL}/api/time-study`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -78,7 +80,7 @@ function showMessage(message, type) {
 // ✅ Fetch and render the latest time study records
 async function loadTimeStudyRecords() {
     try {
-        const res = await fetch('http://localhost:3000/api/time-study/records'); // <-- backend GET endpoint
+        const res = await fetch(`${BACKEND_URL}/api/time-study/records`); // <-- backend GET endpoint
         const records = await res.json();
         
 

@@ -63,7 +63,9 @@ document.addEventListener('DOMContentLoaded', function() {
         
         try {
             // Submit form data to backend
-            const response = await fetch('http://localhost:3000/api/qc-register', {
+            const BACKEND_PORT = window.BACKEND_PORT || 3000;
+            const BACKEND_URL = `http://localhost:${BACKEND_PORT}`;
+            const response = await fetch(`${BACKEND_URL}/api/qc-register`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

@@ -63,7 +63,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:3000/products/search?query=${query}`);
+      const BACKEND_PORT = window.BACKEND_PORT || 3000;
+      const BACKEND_URL = `http://localhost:${BACKEND_PORT}`;
+      const response = await fetch(`${BACKEND_URL}/products/search?query=${query}`);
       if (!response.ok) throw new Error('Network response was not ok');
       const data = await response.json();
       displaySearchResults(data);
@@ -91,7 +93,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     closeProductModal();
 
     try {
-      await fetch('/update-last-used', {
+      await fetch(`${BACKEND_URL}/update-last-used`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ product_code: product.product_code })
@@ -143,7 +145,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
 
     try {
-      const response = await fetch('http://localhost:3000/api/qc', {
+      const response = await fetch(`${BACKEND_URL}/api/qc`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(qcData)
@@ -171,7 +173,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (!currentProduct) return;
 
     try {
-      const response = await fetch(`http://localhost:3000/qc/last?product=${currentProduct}`);
+      const response = await fetch(`${BACKEND_URL}/qc/last?product=${currentProduct}`);
       if (!response.ok) throw new Error('Network response was not ok');
       const data = await response.json();
 
@@ -194,7 +196,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   async function loadQcRecords() {
     try {
-      const response = await fetch('http://localhost:3000/qc');
+      const response = await fetch(`${BACKEND_URL}/qc`);
       if (!response.ok) throw new Error('Network response was not ok');
       const records = await response.json();
 

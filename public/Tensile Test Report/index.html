@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tensile Test Report</title>
+  <script>window.BACKEND_PORT = 3000;</script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a href="/index.html" class="nav-btn">← Back to Dashboard</a>
+  <div class="container">
+    <header class="header-section">
+      <h1 class="main-title">Tensile Test Report</h1>
+      <p class="subtitle">Mechanical Testing Management System</p>
+    </header>
+    <main class="main-content">
+      <section class="form-section">
+        <div class="alert" id="alert"></div>
+        <form id="tensileForm">
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="inspection_date">Date</label>
+              <input type="date" id="inspection_date" name="inspection_date" required>
+            </div>
+            <div class="form-group">
+              <label for="item_id">Item ID</label>
+              <input type="text" id="item_id" name="item_id" list="item_id_list" required autocomplete="off">
+              <datalist id="item_id_list"></datalist>
+            </div>
+            <div class="form-group">
+              <label for="item">Item (Product Description)</label>
+              <input type="text" id="item" name="item" readonly>
+            </div>
+            <div class="form-group">
+              <label for="heat_code">Heat Code</label>
+              <input type="text" id="heat_code" name="heat_code">
+            </div>
+            <div class="form-group">
+              <label for="diameter_mm">Diameter (mm)</label>
+              <input type="number" step="0.01" id="diameter_mm" name="diameter_mm">
+            </div>
+            <div class="form-group">
+              <label for="initial_length_mm">Initial Length (mm)</label>
+              <input type="number" step="0.01" id="initial_length_mm" name="initial_length_mm">
+            </div>
+            <div class="form-group">
+              <label for="final_length_mm">Final Length (mm)</label>
+              <input type="number" step="0.01" id="final_length_mm" name="final_length_mm">
+            </div>
+            <div class="form-group">
+              <label for="breaking_load_kn">Breaking Load (kN)</label>
+              <input type="number" step="0.001" id="breaking_load_kn" name="breaking_load_kn">
+            </div>
+            <div class="form-group">
+              <label for="yield_load_kn">Yield Load (kN)</label>
+              <input type="number" step="0.001" id="yield_load_kn" name="yield_load_kn">
+            </div>
+            <div class="form-group">
+              <label for="uts_n_mm2">UTS (N/mm²)</label>
+              <input type="number" step="0.01" id="uts_n_mm2" name="uts_n_mm2">
+            </div>
+            <div class="form-group">
+              <label for="ys_n_mm2">YS (N/mm²)</label>
+              <input type="number" step="0.01" id="ys_n_mm2" name="ys_n_mm2">
+            </div>
+            <div class="form-group">
+              <label for="elongation_percent">Elongation (%)</label>
+              <input type="number" step="0.01" id="elongation_percent" name="elongation_percent">
+            </div>
+            <div class="form-group" style="grid-column: 1 / -1;">
+              <label for="remarks">Remarks</label>
+              <input type="text" id="remarks" name="remarks">
+            </div>
+          </div>
+          <button type="submit" class="submit-btn">Submit Test Report</button>
+        </form>
+      </section>
+      <section class="records-section">
+        <div class="records-header">
+          <h2 class="records-title">Recent Tensile Test Reports</h2>
+          <button class="refresh-btn" onclick="loadRecords()">Refresh Data</button>
+        </div>
+        <div class="table-container">
+          <table class="records-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Date</th>
+                <th>Item</th>
+                <th>Item ID</th>
+                <th>Heat Code</th>
+                <th>Diameter (mm)</th>
+                <th>Initial Length (mm)</th>
+                <th>Final Length (mm)</th>
+                <th>Breaking Load (kN)</th>
+                <th>Yield Load (kN)</th>
+                <th>UTS (N/mm²)</th>
+                <th>YS (N/mm²)</th>
+                <th>Elongation (%)</th>
+                <th>Remarks</th>
+                <th>Created At</th>
+              </tr>
+            </thead>
+            <tbody id="records-tbody">
+              <tr>
+                <td colspan="15" style="text-align: center; padding: 2rem;">
+                  <div class="loading"></div>
+                  Loading records...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>

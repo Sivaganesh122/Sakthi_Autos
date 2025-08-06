@@ -18,6 +18,7 @@
 - GET    `/qc/last?product=...`        - Get last QC record for product
 - POST   `/update-last-used`           - Update last used timestamp
 
+ster data
 ## QF07 FBQ 03
 - POST   `/api/qc/fbq03/hourly`        - Add hourly record
 - POST   `/api/qc/fbq03/4hourly`       - Add 4-hourly record
@@ -26,8 +27,7 @@
 - GET    `/api/qc/fbq03/:component`    - Get all records for component
 - GET    `/api/qc/fbq03/:component/:eventType` - Get records by event type
 - GET    `/api/qc/fbq03/latest/:component` - Get latest record for component
-- GET    `/api/master-data`            - Get master data
-
+- GET    `/api/master-data`            - Get ma
 
 ## Time Study
 - POST   `/api/time-study`             - Create new time study record

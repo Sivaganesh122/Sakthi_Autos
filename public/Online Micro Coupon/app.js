@@ -1,4 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Dynamic backend port config
+    const BACKEND_PORT = window.BACKEND_PORT || 3000;
+    const BACKEND_URL = `http://localhost:${BACKEND_PORT}`;
+
     // DOM Elements
     const form = document.getElementById('micro-coupon-form');
     const alert = document.getElementById('alert');
@@ -80,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
             submitBtn.textContent = 'Submitting...';
             submitBtn.disabled = true;
 
-            const response = await fetch('http://localhost:3000/api/micro-coupon', {
+            const response = await fetch(`${BACKEND_URL}/api/micro-coupon`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -141,7 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Load and display records
     async function loadRecords() {
         try {
-            const response = await fetch('http://localhost:3000/api/micro-coupon/recent');
+            const response = await fetch(`${BACKEND_URL}/api/micro-coupon/recent`);
             
             if (!response.ok) {
                 throw new Error('Failed to fetch records');

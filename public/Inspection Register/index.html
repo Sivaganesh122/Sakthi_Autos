@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script>window.BACKEND_PORT = 3000;</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inspection Register - Sakthi Autos</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a href="/index.html" class="nav-btn">← Back to Dashboard</a>
+  <div class="container">
+    <header class="header-section">
+      <h1 class="main-title">Inspection Register</h1>
+      <p class="subtitle">Quality Control Management System</p>
+    </header>
+    <main class="main-content">
+      <section class="form-section">
+        <div class="alert" id="alert"></div>
+        <form id="inspectionForm">
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="inspection_date">Date</label>
+              <input type="date" id="inspection_date" name="inspection_date" required>
+            </div>
+            <div class="form-group">
+              <label for="shift">Shift</label>
+              <input type="text" id="shift" name="shift">
+            </div>
+            <div class="form-group">
+              <label for="item_description">Item Description</label>
+              <input type="text" id="item_description" name="item_description" required>
+            </div>
+            <div class="form-group">
+              <label for="inspection_time">Inspection Time</label>
+              <input type="time" id="inspection_time" name="inspection_time">
+            </div>
+            <div class="form-group" style="grid-column: 1 / -1;">
+              <label for="defects_and_quantity">Defects & Quantity</label>
+              <input type="text" id="defects_and_quantity" name="defects_and_quantity">
+            </div>
+          </div>
+          <button type="submit" class="submit-btn">Submit Inspection Data</button>
+        </form>
+      </section>
+      <section class="records-section">
+        <div class="records-header">
+          <h2 class="records-title">Recent Inspection Records</h2>
+          <button class="refresh-btn" onclick="loadRecords()">Refresh Data</button>
+        </div>
+        <div class="table-container">
+          <table class="records-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Date</th>
+                <th>Shift</th>
+                <th>Item Description</th>
+                <th>Inspection Time</th>
+                <th>Defects & Quantity</th>
+                <th>Created At</th>
+              </tr>
+            </thead>
+            <tbody id="records-tbody">
+              <tr>
+                <td colspan="7" style="text-align: center; padding: 2rem;">
+                  <div class="loading"></div>
+                  Loading records...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
