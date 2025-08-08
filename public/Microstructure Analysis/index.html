@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Microstructure Analysis</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Microstructure Analysis</h1>
+  <div id="alert" style="display:none;"></div>
+  <form id="microstructureForm">
+    <label>Analysis Date: <input type="date" name="analysis_date" required></label>
+    <label>Part Name: <input type="text" name="part_name" required></label>
+    <label>Date Code: <input type="text" name="date_code"></label>
+    <label>Heat Code: <input type="text" name="heat_code"></label>
+    <label>Nodularity %: <input type="number" step="0.01" name="nodularity_percentage"></label>
+    <label>Graphite Type: <input type="text" name="graphite_type"></label>
+    <label>Count per mm²: <input type="number" name="count_per_mm2"></label>
+    <label>Size: <input type="text" name="size"></label>
+    <label>Ferrite %: <input type="number" step="0.01" name="ferrite_percentage"></label>
+    <label>Pearlite %: <input type="number" step="0.01" name="pearlite_percentage"></label>
+    <label>Carbide: <input type="text" name="carbide"></label>
+    <label>Remarks: <input type="text" name="remarks"></label>
+    <label>DISA Line ID: <input type="number" name="disa_line_id" required></label>
+    <button type="submit" class="submit-btn">Submit</button>
+  </form>
+  <h2>Records</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Analysis Date</th>
+        <th>Part Name</th>
+        <th>Date Code</th>
+        <th>Heat Code</th>
+        <th>Nodularity %</th>
+        <th>Graphite Type</th>
+        <th>Count/mm²</th>
+        <th>Size</th>
+        <th>Ferrite %</th>
+        <th>Pearlite %</th>
+        <th>Carbide</th>
+        <th>Remarks</th>
+        <th>DISA Line ID</th>
+      </tr>
+    </thead>
+    <tbody id="records-tbody"></tbody>
+  </table>
+  <script src="app.js"></script>
+</body>
+</html>

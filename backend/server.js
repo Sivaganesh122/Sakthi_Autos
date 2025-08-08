@@ -24,6 +24,7 @@ const qcRegisterRouter = require('./qcRegisterRoutes'); // Add QC Register route
 const microCouponRouter = require('./microCouponRoutes'); // Add Micro Coupon routes
 const inspectionRegisterRouter = require('./inspectionRegisterRoutes');
 const tensileTestReportRouter = require('./tensileTestReportRoutes');
+const microstructureAnalysisRoutes = require('./microstructureAnalysisRoutes');
 
 app.use('/', QF07Router);
 app.use('/', QF07FBQ03Router);
@@ -32,6 +33,7 @@ app.use('/', qcRegisterRouter); // Register QC Register routes
 app.use('/', microCouponRouter); // Register Micro Coupon routes
 app.use('/', inspectionRegisterRouter); // Register Inspection Register routes at /api/inspection-register
 app.use('/', tensileTestReportRouter); // Register Tensile Test Report routes
+app.use('/api/microstructure-analysis', microstructureAnalysisRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

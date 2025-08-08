@@ -2,26 +2,6 @@ const pool = require('./database');
 
 
 async function initializeDatabase() {
-  // tensile_test_report
-  await pool.query(`
-    CREATE TABLE IF NOT EXISTS tensile_test_report (
-      id SERIAL PRIMARY KEY,
-      inspection_date DATE NOT NULL,
-      item_id VARCHAR(20) REFERENCES master_data(product_code) NOT NULL,
-      item VARCHAR(255) NOT NULL,
-      heat_code VARCHAR(100),
-      diameter_mm NUMERIC(10, 2),
-      initial_length_mm NUMERIC(10, 2),
-      final_length_mm NUMERIC(10, 2),
-      breaking_load_kn NUMERIC(10, 3),
-      yield_load_kn NUMERIC(10, 3),
-      uts_n_mm2 NUMERIC(10, 2),
-      ys_n_mm2 NUMERIC(10, 2),
-      elongation_percent NUMERIC(5, 2),
-      remarks TEXT,
-      created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-    );
-  `);
   // master_data
   await pool.query(`
     CREATE TABLE IF NOT EXISTS master_data (
@@ -59,27 +39,6 @@ async function initializeDatabase() {
     );
   `);
 
-  // QF 07 FBQ - 03
-  await pool.query(`
-    CREATE TABLE IF NOT EXISTS "QF 07 FBQ - 03" (
-      id SERIAL PRIMARY KEY,
-      component_in_production VARCHAR(20) REFERENCES master_data(product_code) NOT NULL,
-      inoculation_flow_rate_rpm DECIMAL,
-      inoculation_flow_rate_gms DECIMAL,
-      air_pressure DECIMAL CHECK (air_pressure >= 4.0),
-      inject_pressure DECIMAL CHECK (inject_pressure <= 2.0),
-      feed_pipe_condition TEXT,
-      air_line_water_drainage BOOLEAN,
-      hopper_cleaning BOOLEAN,
-      inoculant_powder_size DECIMAL,
-      inoculant_powder_moisture DECIMAL,
-      is_new_bag BOOLEAN DEFAULT FALSE,
-      gauge_test DECIMAL,
-      micro_structure VARCHAR(100) DEFAULT 'Inoculation System Checks',
-      macro_structure VARCHAR(100) DEFAULT 'Pre-Process'
-    );
-  `);
-
   // inspection_register
   await pool.query(`
     CREATE TABLE IF NOT EXISTS inspection_register (
@@ -90,46 +49,6 @@ async function initializeDatabase() {
       inspection_time TIME,
       defects_and_quantity TEXT,
       created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-    );
-  `);
-
-  // recently_used_products
-  await pool.query(`
-    CREATE TABLE IF NOT EXISTS recently_used_products (
-      user_id VARCHAR(50),
-      product_code VARCHAR(20) REFERENCES master_data(product_code),
-      last_used TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
-      PRIMARY KEY (user_id, product_code)
-    );
-  `);
-
-  // time_study_process
-  await pool.query(`
-    CREATE TABLE IF NOT EXISTS time_study_process (
-      id SERIAL PRIMARY KEY,
-      timestamp TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-      shift VARCHAR(10),
-      part_name VARCHAR(100) NOT NULL,
-      heat_code VARCHAR(50) NOT NULL,
-      grade VARCHAR(50) NOT NULL,
-      c FLOAT,
-      si FLOAT,
-      mn FLOAT,
-      p FLOAT,
-      s FLOAT,
-      cr FLOAT,
-      ni FLOAT,
-      al FLOAT,
-      cu FLOAT,
-      sn FLOAT,
-      mo FLOAT,
-      cac2_s FLOAT,
-      fesi_sh FLOAT,
-      femn_sic FLOAT,
-      cu_fecr FLOAT,
-      carbon_steel VARCHAR(50),
-      micro_structure VARCHAR(100) DEFAULT 'Melting/Pouring Control',
-      macro_structure VARCHAR(100) DEFAULT 'In-Process Documents'
     );
   `);
 
@@ -177,8 +96,143 @@ async function initializeDatabase() {
       tapping_wt_kgs FLOAT
     );
   `);
+  // tensile_test_report
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS tensile_test_report (
+      c2 FLOAT,
+      si2 FLOAT,
+      mn2 FLOAT,
+      s2 FLOAT
+    );
+  `);
 
-  // online_micro_coupon_inspection
+  // Create disa_line table
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS disa_line (
+      id SERIAL PRIMARY KEY,
+      name VARCHAR(255) UNIQUE NOT NULL
+    );
+  `);
+
+  // Insert initial disa_line values if not present
+  await pool.query(`
+    INSERT INTO disa_line (name)
+    VALUES ('DISA-I'), ('DISA-II'), ('DISA-III'), ('DISA-IV')
+    ON CONFLICT (name) DO NOTHING;
+  `);
+
+  // Create microstructure_analysis table
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS microstructure_analysis (
+      id SERIAL PRIMARY KEY,
+      analysis_date DATE NOT NULL,
+      part_name VARCHAR(255) NOT NULL,
+      date_code VARCHAR(255),
+      heat_code VARCHAR(255),
+      nodularity_percentage NUMERIC(5, 2),
+      graphite_type VARCHAR(255),
+      count_per_mm2 INT,
+      size VARCHAR(50),
+      ferrite_percentage NUMERIC(5, 2),
+      pearlite_percentage NUMERIC(5, 2),
+      carbide VARCHAR(255),
+      remarks TEXT,
+      disa_line_id INT NOT NULL,
+      created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+      CONSTRAINT fk_disa_line FOREIGN KEY(disa_line_id) REFERENCES disa_line(id)
+    );
+  `);
+
+  // QF 07 FBQ - 03
+await pool.query(`
+  CREATE TABLE IF NOT EXISTS "QF 07 FBQ - 03" (
+    id SERIAL PRIMARY KEY,
+    component_in_production VARCHAR(20) REFERENCES master_data(product_code) NOT NULL,
+    inoculation_flow_rate_rpm DECIMAL,
+    inoculation_flow_rate_gms DECIMAL,
+    air_pressure DECIMAL CHECK (air_pressure >= 4.0),
+    inject_pressure DECIMAL CHECK (inject_pressure <= 2.0),
+    feed_pipe_condition TEXT,
+    air_line_water_drainage BOOLEAN,
+    hopper_cleaning BOOLEAN,
+    inoculant_powder_size DECIMAL,
+    inoculant_powder_moisture DECIMAL,
+    is_new_bag BOOLEAN DEFAULT FALSE,
+    gauge_test DECIMAL,
+    micro_structure VARCHAR(100) DEFAULT 'Inoculation System Checks',
+    macro_structure VARCHAR(100) DEFAULT 'Pre-Process'
+  );
+`);
+
+  // recently_used_products
+await pool.query(`
+  CREATE TABLE IF NOT EXISTS recently_used_products (
+    user_id VARCHAR(50),
+    product_code VARCHAR(20) REFERENCES master_data(product_code),
+    last_used TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (user_id, product_code)
+  );
+`);
+
+  // time_study_process
+await pool.query(`
+  CREATE TABLE IF NOT EXISTS time_study_process (
+    id SERIAL PRIMARY KEY,
+    timestamp TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    shift VARCHAR(10),
+    part_name VARCHAR(100) NOT NULL,
+    heat_code VARCHAR(50) NOT NULL,
+    grade VARCHAR(50) NOT NULL,
+    c FLOAT,
+    si FLOAT,
+    mn FLOAT,
+    p FLOAT,
+    s FLOAT,
+    cr FLOAT,
+    ni FLOAT,
+    al FLOAT,
+    cu FLOAT,
+    sn FLOAT,
+    mo FLOAT,
+    cac2_s FLOAT,
+    fesi_sh FLOAT,
+    femn_sic FLOAT,
+    cu_fecr FLOAT,
+    carbon_steel VARCHAR(50),
+    micro_structure VARCHAR(100) DEFAULT 'Melting/Pouring Control',
+    macro_structure VARCHAR(100) DEFAULT 'In-Process Documents',
+    mn1 FLOAT,
+    p1 FLOAT,
+    s1 FLOAT,
+    mg1 FLOAT,
+    f_l1 FLOAT,
+    cu1 FLOAT,
+    cr1 FLOAT,
+    c2 FLOAT,
+    si2 FLOAT,
+    mn2 FLOAT,
+    s2 FLOAT,
+    cr2 FLOAT,
+    cu2 FLOAT,
+    sn2 FLOAT,
+    pouring_time TIME,
+    pouring_temp FLOAT,
+    pp_code VARCHAR(20),
+    fc_no_heat_no VARCHAR(50),
+    mg_kgs FLOAT,
+    res_mg FLOAT,
+    converter_percent FLOAT,
+    rec_mg_percent FLOAT,
+    stream_innoculat FLOAT,
+    p_time_sec FLOAT,
+    treatment_no VARCHAR(20),
+    con_no VARCHAR(20),
+    tapping_time TIME,
+    corrective_addition_kgs FLOAT
+  );
+`);
+  // ...existing code...
+
   await pool.query(`
     CREATE TABLE IF NOT EXISTS online_micro_coupon_inspection (
       id SERIAL PRIMARY KEY,
