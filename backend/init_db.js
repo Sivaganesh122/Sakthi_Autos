@@ -247,6 +247,131 @@ await pool.query(`
     );
   `);
 
+    // IMPACT TEST REPORT
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS "IMPACT TEST REPORT" (
+      id SERIAL PRIMARY KEY,
+      inspection_date DATE NOT NULL,
+      part_name VARCHAR(255) NOT NULL,
+      date_code VARCHAR(50),
+      specification TEXT,
+      observed_value NUMERIC(10, 2) CHECK (observed_value >= 0),
+      remarks TEXT,
+      created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    );
+  `);
+
+  // REJECTION ANALYSIS REGISTER
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS "REJECTION ANALYSIS REGISTER" (
+      id SERIAL PRIMARY KEY,
+      record_date DATE NOT NULL,
+      component_name VARCHAR(255) NOT NULL,
+      ins_qty INT CHECK (ins_qty >= 0),
+      rej_qty INT CHECK (rej_qty >= 0),
+      rej_percentage NUMERIC(5, 2) CHECK (rej_percentage >= 0 AND rej_percentage <= 100),
+      date_code VARCHAR(50),
+      bh INT CHECK (bh >= 0),
+      ph INT CHECK (ph >= 0),
+      sd INT CHECK (sd >= 0),
+      mb INT CHECK (mb >= 0),
+      mc INT CHECK (mc >= 0),
+      scab INT CHECK (scab >= 0),
+      sk INT CHECK (sk >= 0),
+      xr INT CHECK (xr >= 0),
+      sp INT CHECK (sp >= 0),
+      og INT CHECK (og >= 0),
+      dt INT CHECK (dt >= 0),
+      cb INT CHECK (cb >= 0),
+      mck INT CHECK (mck >= 0),
+      gl INT CHECK (gl >= 0),
+      sl INT CHECK (sl >= 0),
+      created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    );
+  `);
+
+  // INSPECTION RESULT REPORT
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS "INSPECTION RESULT REPORT" (
+      id SERIAL PRIMARY KEY,
+      month VARCHAR(20) NOT NULL,
+      part_name VARCHAR(255) NOT NULL,
+      part_no VARCHAR(100) NOT NULL,
+      cat VARCHAR(50),
+      model VARCHAR(100),
+      vendor_name VARCHAR(255),
+      issue_date DATE,
+      check_item TEXT,
+      specification TEXT,
+      data_code_1 VARCHAR(50),
+      data_code_2 VARCHAR(50),
+      data_code_3 VARCHAR(50),
+      data_code_4 VARCHAR(50),
+      data_code_5 VARCHAR(50),
+      data_code_6 VARCHAR(50),
+      data_code_7 VARCHAR(50),
+      data_code_8 VARCHAR(50),
+      data_code_9 VARCHAR(50),
+      data_code_10 VARCHAR(50),
+      remark TEXT,
+      created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    );
+  `);
+
+// ERROR PROOF VERIFICATION CHECK LIST - FDY
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS "ERROR PROOF VERIFICATION CHECK LIST - FDY" (
+      id SERIAL PRIMARY KEY,
+      line VARCHAR(50) NOT NULL,
+      error_proof_name VARCHAR(255) NOT NULL,
+      nature_of_error_proof TEXT,
+      frequency VARCHAR(50) NOT NULL,
+      date1_shift1_obs TEXT,
+      date1_shift2_obs TEXT,
+      date1_shift3_obs TEXT,
+      date2_shift1_obs TEXT,
+      date2_shift2_obs TEXT,
+      date2_shift3_obs TEXT,
+      date3_shift1_obs TEXT,
+      date3_shift2_obs TEXT,
+      date3_shift3_obs TEXT,
+      created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    );
+  `);
+
+  // Hardness Test Record
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS "Hardness Test Record" (
+      id SERIAL PRIMARY KEY,
+      test_date DATE NOT NULL,
+      part_name VARCHAR(255) NOT NULL,
+      identification_data VARCHAR(100),
+      heat_code VARCHAR(100),
+      tested_value NUMERIC(10, 2) CHECK (tested_value >= 0),
+      average_value NUMERIC(10, 2) CHECK (average_value >= 0),
+      remarks TEXT,
+      created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    );
+  `);
+
+  // CARBON - SULPHUR (LECO) ANALYSIS REGISTER
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS "CARBON - SULPHUR (LECO) ANALYSIS REGISTER" (
+      id SERIAL PRIMARY KEY,
+      date DATE NOT NULL,
+      part_name VARCHAR(255) NOT NULL,
+      identification_data_heat_code VARCHAR(255) NOT NULL,
+      leco_c_percent NUMERIC(5, 2) CHECK (leco_c_percent >= 0),
+      leco_s_percent NUMERIC(5, 2) CHECK (leco_s_percent >= 0),
+      spectro_c_percent NUMERIC(5, 2) CHECK (spectro_c_percent >= 0),
+      spectro_s_percent NUMERIC(5, 2) CHECK (spectro_s_percent >= 0),
+      tested_by VARCHAR(255),
+      approved_by VARCHAR(255),
+      remarks TEXT,
+      created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    );
+  `);
+
   console.log('Database initialized: All tables are ensured.');
 }
 
