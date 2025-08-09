@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error Proof Verification Checklist FDY</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Error Proof Verification Checklist FDY</h1>
+    <form id="epvcfdy-form">
+        <label for="date">Date:</label>
+        <input type="date" id="date" name="date" required><br>
+        <label for="shift">Shift:</label>
+        <input type="text" id="shift" name="shift" required><br>
+        <label for="operator">Operator:</label>
+        <input type="text" id="operator" name="operator" required><br>
+        <label for="checklist">Checklist:</label>
+        <textarea id="checklist" name="checklist" required></textarea><br>
+        <label for="line">Line:</label>
+        <input type="text" id="line" name="line" required><br>
+        <label for="serial_no">Serial No:</label>
+        <input type="number" id="serial_no" name="serial_no" required><br>
+        <label for="error_proof_no">Error Proof No:</label>
+        <input type="text" id="error_proof_no" name="error_proof_no" required><br>
+        <label for="error_proof_name">Error Proof Name:</label>
+        <input type="text" id="error_proof_name" name="error_proof_name" required><br>
+        <label for="verification_date_shift">Verification Date/Shift:</label>
+        <input type="text" id="verification_date_shift" name="verification_date_shift" required><br>
+        <label for="nature_of_error_proof">Nature of Error Proof:</label>
+        <input type="text" id="nature_of_error_proof" name="nature_of_error_proof" required><br>
+        <label for="frequency">Frequency:</label>
+        <input type="text" id="frequency" name="frequency" required><br>
+        <label for="date1_shift1_obs">Date1 Shift1 Obs:</label>
+        <input type="text" id="date1_shift1_obs" name="date1_shift1_obs"><br>
+        <label for="date1_shift2_obs">Date1 Shift2 Obs:</label>
+        <input type="text" id="date1_shift2_obs" name="date1_shift2_obs"><br>
+        <label for="date1_shift3_obs">Date1 Shift3 Obs:</label>
+        <input type="text" id="date1_shift3_obs" name="date1_shift3_obs"><br>
+        <label for="date2_shift1_obs">Date2 Shift1 Obs:</label>
+        <input type="text" id="date2_shift1_obs" name="date2_shift1_obs"><br>
+        <label for="date2_shift2_obs">Date2 Shift2 Obs:</label>
+        <input type="text" id="date2_shift2_obs" name="date2_shift2_obs"><br>
+        <label for="date2_shift3_obs">Date2 Shift3 Obs:</label>
+        <input type="text" id="date2_shift3_obs" name="date2_shift3_obs"><br>
+        <label for="date3_shift1_obs">Date3 Shift1 Obs:</label>
+        <input type="text" id="date3_shift1_obs" name="date3_shift1_obs"><br>
+        <label for="date3_shift2_obs">Date3 Shift2 Obs:</label>
+        <input type="text" id="date3_shift2_obs" name="date3_shift2_obs"><br>
+        <label for="date3_shift3_obs">Date3 Shift3 Obs:</label>
+        <input type="text" id="date3_shift3_obs" name="date3_shift3_obs"><br>
+        <label for="problem">Problem:</label>
+        <input type="text" id="problem" name="problem"><br>
+        <label for="root_cause">Root Cause:</label>
+        <input type="text" id="root_cause" name="root_cause"><br>
+        <label for="corrective_action">Corrective Action:</label>
+        <input type="text" id="corrective_action" name="corrective_action"><br>
+        <label for="status">Status:</label>
+        <select id="status" name="status">
+            <option value="Open">Open</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Closed">Closed</option>
+        </select><br>
+        <label for="reviewed_by">Reviewed By:</label>
+        <input type="text" id="reviewed_by" name="reviewed_by"><br>
+        <label for="approved_by">Approved By:</label>
+        <input type="text" id="approved_by" name="approved_by"><br>
+        <label for="remarks">Remarks:</label>
+        <textarea id="remarks" name="remarks"></textarea><br>
+        <button type="submit">Submit</button>
+    </form>
+    <script src="app.js"></script>
+</body>
+</html>

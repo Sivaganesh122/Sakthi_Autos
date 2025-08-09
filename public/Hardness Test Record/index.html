@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hardness Test Record</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Hardness Test Record</h1>
+    <form id="hardness-test-form">
+        <!-- Add input fields matching the DB columns, example: -->
+        <label for="date">Date:</label>
+        <input type="date" id="date" name="date" required><br>
+        <label for="sample_id">Sample ID:</label>
+        <input type="text" id="sample_id" name="sample_id" required><br>
+        <label for="hardness_value">Hardness Value:</label>
+        <input type="number" id="hardness_value" name="hardness_value" required><br>
+        <!-- Add more fields as per table definition -->
+        <button type="submit">Submit</button>
+    </form>
+    <script src="app.js"></script>
+</body>
+</html>

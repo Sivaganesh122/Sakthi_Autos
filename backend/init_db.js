@@ -323,7 +323,10 @@ await pool.query(`
     CREATE TABLE IF NOT EXISTS "ERROR PROOF VERIFICATION CHECK LIST - FDY" (
       id SERIAL PRIMARY KEY,
       line VARCHAR(50) NOT NULL,
+      serial_no INT NOT NULL CHECK (serial_no > 0),
+      error_proof_no VARCHAR(50) NOT NULL,
       error_proof_name VARCHAR(255) NOT NULL,
+      verification_date_shift VARCHAR(100) NOT NULL,
       nature_of_error_proof TEXT,
       frequency VARCHAR(50) NOT NULL,
       date1_shift1_obs TEXT,
@@ -335,6 +338,13 @@ await pool.query(`
       date3_shift1_obs TEXT,
       date3_shift2_obs TEXT,
       date3_shift3_obs TEXT,
+      problem TEXT,
+      root_cause TEXT,
+      corrective_action TEXT,
+      status VARCHAR(50) CHECK (status IN ('Open', 'In Progress', 'Closed')),
+      reviewed_by VARCHAR(255),
+      approved_by VARCHAR(255),
+      remarks TEXT,
       created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
     );
   `);

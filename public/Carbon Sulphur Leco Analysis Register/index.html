@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carbon Sulphur Leco Analysis Register</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Carbon Sulphur Leco Analysis Register</h1>
+    <form id="carbon-sulphur-leco-form">
+        <!-- Add input fields matching the DB columns, example: -->
+        <label for="date">Date:</label>
+        <input type="date" id="date" name="date" required><br>
+        <label for="sample_id">Sample ID:</label>
+        <input type="text" id="sample_id" name="sample_id" required><br>
+        <label for="carbon">Carbon (%):</label>
+        <input type="number" step="0.01" id="carbon" name="carbon" required><br>
+        <label for="sulphur">Sulphur (%):</label>
+        <input type="number" step="0.01" id="sulphur" name="sulphur" required><br>
+        <!-- Add more fields as per table definition -->
+        <button type="submit">Submit</button>
+    </form>
+    <script src="app.js"></script>
+</body>
+</html>
